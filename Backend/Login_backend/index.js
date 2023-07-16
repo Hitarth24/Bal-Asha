@@ -1,26 +1,18 @@
 import express from "express";
-// const express = require("express");
-// const cors = require("cors");
-// const mongoose = require("mongoose");
-// const bcrypt = require("bcryptjs");
-// const jwt = require("jsonwebtoken");
-// const axios = require("axios");
 import cors from "cors";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import axios from "axios";
-const JWT_SECRET = "sad2erewfewtrgvdscsacdwadsafgrwt346536";
-
+import dotenv from "dotenv";
+dotenv.config({path: "config.env"})
+//console.log(process.env.MONGOOSE_URL)
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(cors());
 
-mongoose.connect("mongodb://127.0.0.1:27017/loginregisterDB", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGOOSE_URL);
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 db.once("open", () => {
@@ -33,6 +25,7 @@ const userSchema = new mongoose.Schema({
   password: String,
   level: Number,
 });
+const JWT_SECRET = "sad2erewfewtrgvdscsacdwadsafgrwt346536";
 const childSchema = new mongoose.Schema({
   state: String,
   district: String,
